@@ -3,6 +3,7 @@ package com.example.drawingapp
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import com.google.android.material.shape.ShapePath.PathQuadOperation
@@ -27,11 +28,11 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs){
         mDrawPaint = Paint() //object
         mDrawPath = CustomPath(color,mBrushSize)
         mDrawPaint!!.color = color
-        mDrawPaint!!.style = Paint.Style.STROKE
-        mDrawPaint!!.strokeJoin = Paint.Join.ROUND
-        mDrawPaint!!.strokeCap = Paint.Cap.ROUND
+        mDrawPaint!!.style = Paint.Style.STROKE //This is to draw a stroke style
+        mDrawPaint!!.strokeJoin = Paint.Join.ROUND //This is for stroke join
+        mDrawPaint!!.strokeCap = Paint.Cap.ROUND //This is for stroke Cap
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
-        mBrushSize = 20.toFloat()
+        //mBrushSize = 20.toFloat()
 
     }
 
@@ -100,8 +101,16 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs){
             else -> return false
         }
         invalidate()
-
         return true
+    }
+
+    fun setSizeForBrush(newSize : Float){
+        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+
+            newSize, resources.displayMetrics
+        )
+        mDrawPaint!!.strokeWidth = mBrushSize
+
     }
     internal inner class CustomPath(var color: Int,
                                     var brushThickness: Float) : Path(){
